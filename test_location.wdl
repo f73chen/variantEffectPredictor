@@ -4,17 +4,13 @@ workflow test_location {
 
 task find_tools {
     command {
-        ls $PICARD_ROOT
-        echo "@@@@@@@@@@@@@@@@"
-        ls $JAVA_ROOT
-        echo "@@@@@@@@@@@@@@@@"
-        ls $DELLY_ROOT
-        echo "@@@@@@@@@@@@@@@@"
-        ls $BCFTOOLS_ROOT
-        echo "@@@@@@@@@@@@@@@@"
-        ls $HTSLIB_ROOT
+        ls $BEDTOOLS_ROOT
         echo "@@@@@@@@@@@@@@@@"
         ls $TABIX_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $VEP_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $CONDA_ROOT
         echo "@@@@@@@@@@@@@@@@"
         ls $VCFTOOLS_ROOT
         echo "@@@@@@@@@@@@@@@@"
@@ -23,21 +19,21 @@ task find_tools {
 
         echo $PATH
         echo "################"
-        echo $LD_LIBRARY_PATH
-        echo "################"
         echo $MANPATH
         echo "################"
-        echo $PKG_CONFIG_PATH
-        echo "################"
-        echo $LD_RUN_PATH
+        echo $LD_LIBRARY_PATH
         echo "################"
         echo $PERL5LIB
         echo "################"
+        echo $PKG_CONFIG_PATH
+        echo "################"
+	echo $PYTHONPATH
+	echo "################"
     }
     output{
         String message = read_string(stdout())
     }
     runtime {
-        docker: "g3chen/delly:1.0"
+        docker: "g3chen/varianteffectpredictor:1.0"
     }
 }
