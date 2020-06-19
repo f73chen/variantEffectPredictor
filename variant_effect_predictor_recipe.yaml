@@ -1,0 +1,100 @@
+# bedtools/2.27
+- name: bedtools
+  version: 2.27
+  build_type: make
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: f1c468c9dbd82a5c13f51c1df1fffd5ea736901cfc0ec9fb9c428d085390823d
+        url: http://deb.debian.org/debian/pool/main/b/bedtools/bedtools_2.27.1+dfsg.orig.tar.xz
+      prereq_type: download
+    prereq_type: extract
+
+# tabix/0.2.6
+- name: tabix
+  version: 0.2.6
+  build_type: custom
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: e4066be7101bae83bec62bc2bc6917013f6c2875b66eb5055fbb013488d68b73
+        url: https://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.6.tar.bz2
+      prereq_type: download
+    prereq_type: extract
+    steps:
+      - command:
+        - make
+      - build_type: copy
+        build_args:
+         from: tabix
+         to: "bin/tabix"
+         executable: true
+      - build_type: copy
+        build_args:
+         from: bgzip
+         to: "bin/bgzip"
+         executable: true
+
+# conda/4.6.14
+- name: conda
+  version: 4.6.14
+  build_type: custom
+  build_args:
+    prereq_args:
+      sha256: 0d6b23895a91294a4924bd685a3a1f48e35a17970a073cd2f684ffe2c31fc4be
+      url: https://repo.anaconda.com/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh
+    prereq_type: download
+    steps:
+      - command:
+        - /bin/bash
+        - download
+        - -b
+        - -p
+        - "{output_dir}"
+        - -f
+
+# vep/92.0
+- name: vep
+  version: 92.0
+  build_type: bioconda
+  build_args:
+    package: ensembl-vep
+    version: 92.0
+  depends:
+    - name: conda
+      version: 4.6.14
+      required_at: build
+
+# perl/"5.30"
+- name: perl
+  version: "5.30"
+  build_type: perl
+  build_args:
+    prereq_args:
+      prereq_args:
+        md5: f399f3aaee90ddcff5eadd3bccdaacc0
+        url: https://www.cpan.org/src/5.0/perl-5.30.1.tar.xz
+      prereq_type: download
+    prereq_type: extract
+  system_depends:
+  - name: libreadline-dev
+    permitted_os: ["Ubuntu18.04"]
+  - name: libreadline6-dev
+    permitted_os: ["Debian8.11"]
+
+# vcftools/0.1.16
+- name: vcftools
+  version: 0.1.16
+  build_type: autotools
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: 575c13073efe65cbff6e2ab99eef12fe04536f5dc1f98de6674c848ca83cf302
+        url: https://github.com/vcftools/vcftools/archive/v0.1.16.tar.gz
+      prereq_type: download
+    prereq_type: extract
+  depends:
+    - name: perl
+      version: "5.30"
+  system_depends:
+    - name: zlib1g-dev
