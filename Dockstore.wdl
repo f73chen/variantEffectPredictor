@@ -5,33 +5,39 @@ workflow variantEffectPredictor {
     File? targetBed
     Boolean toMAF
     Boolean onlyTumor
+    String docker = "g3chen/varianteffectpredictor:1.0"
   }
 
   if (defined(targetBed) == true) {
     call targetBedTask {
       input: vcfFile = vcfFile, 
-             targetBed = targetBed
+             targetBed = targetBed,
+             docker = docker
     }
   }
 
   call vep {
       input: vcfFile =  select_first([targetBedTask.targetedVcf, vcfFile]),
+             docker = docker
   }
 
   if (toMAF == true) {
     if (onlyTumor == true) {
       call tumorOnlyAlign {
-        input: vcfFile = select_first([targetBedTask.targetedVcf, vcfFile])    
+        input: vcfFile = select_first([targetBedTask.targetedVcf, vcfFile]),
+               docker = docker  
       }
     }
 
     call getSampleNames {
-      input: vcfFile = vcfFile
+      input: vcfFile = vcfFile,
+             docker = docker
     }
 
     call vcf2maf {
       input: vcfFile = select_first([tumorOnlyAlign.unmatchedOutputVcf,targetBedTask.targetedVcf, vcfFile]),
-             tumorNormalNames = getSampleNames.tumorNormalNames
+             tumorNormalNames = getSampleNames.tumorNormalNames,
+             docker = docker
       } 
     }
 
@@ -40,6 +46,7 @@ workflow variantEffectPredictor {
     targetBed: "Target bed file"
     toMAF: "If true, generate the MAF file"
     onlyTumor: "If true, run tumor only mode"
+    docker: "Docker container to run the workflow in"
   }
 
   meta {
@@ -93,7 +100,7 @@ task targetBedTask {
     Int jobMemory = 32
     Int threads = 4
     Int timeout = 6
- 
+    String docker
   }
 
   parameter_meta {
@@ -104,6 +111,7 @@ task targetBedTask {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    docker: "Docker container to run the workflow in"
   }
 
   command <<<
@@ -120,6 +128,7 @@ task targetBedTask {
   >>>
 
   runtime {
+    docker:  "~{docker}"
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
@@ -150,6 +159,7 @@ task vep {
     Int jobMemory = 32
     Int threads = 4
     Int timeout = 16
+    String docker = docker
   }
 
   parameter_meta {
@@ -162,6 +172,7 @@ task vep {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    docker: "Docker container to run the workflow in"
   }
 
   command <<<
@@ -179,6 +190,7 @@ task vep {
   >>> 
 
   runtime {
+    docker:  "~{docker}"
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
@@ -206,7 +218,8 @@ task tumorOnlyAlign {
     String modules = "bcftools/1.9 tabix/0.2.6 vcftools/0.1.16"
     Int jobMemory = 32
     Int threads = 4
-    Int timeout = 6   
+    Int timeout = 6 
+    String docker  
   }
   parameter_meta {
     vcfFile: "Vcf input file"
@@ -215,6 +228,7 @@ task tumorOnlyAlign {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    docker: "Docker container to run the workflow in"
   }
   command <<<
     set -euo pipefail
@@ -239,6 +253,7 @@ task tumorOnlyAlign {
   >>>
 
   runtime {
+    docker:  "~{docker}"
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
@@ -266,6 +281,7 @@ task getSampleNames {
     Int jobMemory = 32
     Int threads = 4
     Int timeout = 6
+    String docker
   }
   parameter_meta {
     vcfFile: "Vcf input file"
@@ -274,6 +290,7 @@ task getSampleNames {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    docker: "Docker container to run the workflow in"
   }
   command <<<
     set -euo pipefail
@@ -288,6 +305,7 @@ task getSampleNames {
   >>>
 
   runtime {
+    docker:  "~{docker}"
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
@@ -322,6 +340,7 @@ task vcf2maf {
     Int jobMemory = 32
     Int threads = 4
     Int timeout = 48
+    String docker
   }
 
   parameter_meta {
@@ -341,6 +360,7 @@ task vcf2maf {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    docker: "Docker container to run the workflow in"
   }
 
   command <<< 
@@ -362,6 +382,7 @@ task vcf2maf {
   >>>
 
   runtime {
+    docker:  "~{docker}"
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
