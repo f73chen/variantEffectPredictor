@@ -16,6 +16,10 @@ task find_tools {
         echo "@@@@@@@@@@@@@@@@"
         ls $PERL_ROOT
         echo "@@@@@@@@@@@@@@@@"
+        ls $BCFTOOLS_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $HTSLIB_ROOT
+        echo "@@@@@@@@@@@@@@@@"
 
         echo $PATH
         echo "################"
@@ -27,8 +31,10 @@ task find_tools {
         echo "################"
         echo $PKG_CONFIG_PATH
         echo "################"
-	echo $PYTHONPATH
-	echo "################"
+        echo $PYTHONPATH
+        echo "################"
+        echo $LD_RUN_PATH
+        echo "################"
     }
     output{
         String message = read_string(stdout())
