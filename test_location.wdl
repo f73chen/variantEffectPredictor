@@ -20,6 +20,8 @@ task find_tools {
         echo "@@@@@@@@@@@@@@@@"
         ls $HTSLIB_ROOT
         echo "@@@@@@@@@@@@@@@@"
+        whereis bgzip
+        echo "@@@@@@@@@@@@@@@@"
 
         echo $PATH
         echo "################"
