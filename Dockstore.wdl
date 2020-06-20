@@ -154,7 +154,8 @@ task vep {
     String basename = basename("~{vcfFile}", ".vcf.gz")
     String? addParam
     String vepCacheDir
-    String referenceFasta
+    # String referenceFasta
+    File referenceFasta
     String modules
     Int jobMemory = 32
     Int threads = 4
@@ -329,11 +330,13 @@ task vcf2maf {
     File tumorNormalNames
     String modules
     String species = "homo_sapiens"
-    String referenceFasta
+    # String referenceFasta
+    File referenceFasta
     String ncbiBuild
     String vepPath
     String vepCacheDir
-    String vcfFilter
+    # String vcfFilter
+    File vcfFilter
     Int maxfilterAC = 10
     Float minHomVaf = 0.7
     Int bufferSize = 200
