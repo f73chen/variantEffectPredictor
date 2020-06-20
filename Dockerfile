@@ -13,9 +13,6 @@ RUN ./build-local-code /modulator/code/gsi/recipe.yaml --initsh /usr/share/modul
 	find /modules -type d -exec chmod 777 {} \; && \
 	find /modules -type f -exec chmod 777 {} \;
 
-# install programs
-RUN apt-get -m update && apt-get install -y libdbi-perl
-
 # add the user
 RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
