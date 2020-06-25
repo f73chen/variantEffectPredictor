@@ -42,6 +42,7 @@ task find_tools {
         String message = read_string(stdout())
     }
     runtime {
-        docker: "g3chen/varianteffectpredictor:1.0"
+        docker: "g3chen/varianteffectpredictor:2.0"
+        modules: "bedtools/2.27 tabix/0.2.6 vep/92.0 vcftools/0.1.16 bcftools/1.9"
     }
 }
