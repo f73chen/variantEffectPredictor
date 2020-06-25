@@ -135,3 +135,67 @@
       version: "5.30"
   system_depends:
     - name: zlib1g-dev
+
+# samtools/0.1.19
+- name: samtools
+  version: 0.1.19
+  build_type: custom
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: 180c120a040ec660ebecc30ebae664772c0fd503e028173ab2496379bc208c17
+        url: https://github.com/samtools/samtools/archive/0.1.19.tar.gz
+      prereq_type: download
+    prereq_type: extract
+    steps:
+    - command:
+      - make
+    - build_type: copy
+      build_args:
+        from: samtools
+        to: bin/samtools
+        executable: true
+
+# vcf2maf/1.6.17
+- name: vcf2maf
+  version: 1.6.17
+  build_type: custom
+  build_args:
+    prereq_type: extract
+    prereq_args:
+      prereq_args:
+        sha256: aad8b14fbf73ebb3f63c4ce9b9457ae1deda113fefa67c26b9516c1395cea121
+        url: https://github.com/mskcc/vcf2maf/archive/v1.6.17.tar.gz
+      prereq_type: download
+    steps:
+      - build_type: copy
+        build_args:
+          from: .
+          to: share/vcf2maf
+      - build_type: gen_script
+        build_args:
+          content: "#!/bin/sh\n\nperl $(dirname $0)/../share/vcf2maf/vcf2maf.pl \"$@\"\n"
+          name: "vcf2maf"
+      - build_type: gen_script
+        build_args:
+          content: "#!/bin/sh\n\nperl $(dirname $0)/../share/vcf2maf/vcf2vcf.pl \"$@\"\n"
+          name: "vcf2vcf"
+      - build_type: gen_script
+        build_args:
+          content: "#!/bin/sh\n\nperl $(dirname $0)/../share/vcf2maf/maf2vcf.pl \"$@\"\n"
+          name: "maf2vcf"
+      - build_type: gen_script
+        build_args:
+          content: "#!/bin/sh\n\nperl $(dirname $0)/../share/vcf2maf/maf2maf.pl \"$@\"\n"
+          name: "maf2maf"
+  depends:
+    # vep/96.0 provides perl
+    #- name: perl
+    #  version: 5.28
+    - name: vep
+      version: 92.0
+      required_at: soft_runtime
+    - name: samtools
+      version: 0.1.19
+    - name: tabix
+      version: 0.2.6 
