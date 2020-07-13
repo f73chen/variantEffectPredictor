@@ -1,0 +1,15 @@
+{
+  "variantEffectPredictor.vcfFile": "/home/ubuntu/data/sample_data/vep/TGL08_0075_Lu_P_EX.mutect2.tumor_only.vcf.gz",
+  "variantEffectPredictor.onlyTumor": true,
+  "variantEffectPredictor.toMAF": true,
+  "variantEffectPredictor.targetBed": "/home/ubuntu/data/sample_data/vep/ensembl_v6_ccds_exons_onebed_intersectRegions_pad50.bed",
+  "variantEffectPredictor.vep.modules": "vep/92.0 tabix/0.2.6 vep-hg19-cache/92 hg19/p13",
+  "variantEffectPredictor.vep.referenceFasta": "$HG19_ROOT/hg19_random.fa",
+  "variantEffectPredictor.vcf2maf.ncbiBuild": "GRCh37",
+  "variantEffectPredictor.vep.vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+  "variantEffectPredictor.vcf2maf.modules": "vcf2maf/1.6.17 tabix/0.2.6 hg19/p13 vep-hg19-cache/92 vep-hg19-exac/0.3.1",
+  "variantEffectPredictor.vcf2maf.referenceFasta": "$HG19_ROOT/hg19_random.fa",
+  "variantEffectPredictor.vcf2maf.vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+  "variantEffectPredictor.vcf2maf.vepPath": "$VEP_ROOT/bin/",
+  "variantEffectPredictor.vcf2maf.vcfFilter": "$VEP_HG19_EXAC_ROOT/ExAC_nonTCGA.r0.3.1.somatic.sites.vep.vcf.gz"                                                                                                                                                                                                                                                                                                                                                                                     
+}
